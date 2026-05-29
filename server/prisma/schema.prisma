@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  role          String
+  walletAddress String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  donorOperations    Operation[] @relation("DonorOperations")
+  ongOperations      Operation[] @relation("OngOperations")
+  ongVouchers        Voucher[]   @relation("OngVouchers")
+  beneficiaryVouchers Voucher[]  @relation("BeneficiaryVouchers")
+  merchantTransactions Transaction[]
+}
+
+model Operation {
+  id            String   @id @default(uuid())
+  donorId       String
+  ongId         String
+  amount        Float
+  status        String   @default("PENDING")
+  stellarTxRef  String?
+  operationHash String?
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  donor User @relation("DonorOperations", fields: [donorId], references: [id])
+  ong   User @relation("OngOperations", fields: [ongId], references: [id])
+}
+
+model Voucher {
+  id                    String   @id @default(uuid())
+  ongId                 String
+  beneficiaryId         String
+  amount                Float
+  category              String
+  qrCode                String   @unique
+  status                String   @default("ACTIVE")
+  stellarCheckpointRef  String?
+  expiresAt             DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  ong          User          @relation("OngVouchers", fields: [ongId], references: [id])
+  beneficiary  User          @relation("BeneficiaryVouchers", fields: [beneficiaryId], references: [id])
+  transactions Transaction[]
+}
+
+model Transaction {
+  id                 String   @id @default(uuid())
+  voucherId          String
+  merchantId         String
+  amount             Float
+  status             String   @default("PENDING")
+  verificationStatus String   @default("PENDING_VERIFICATION")
+  stellarTxRef       String?
+  transactionHash    String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  voucher  Voucher @relation(fields: [voucherId], references: [id])
+  merchant User    @relation(fields: [merchantId], references: [id])
+}
