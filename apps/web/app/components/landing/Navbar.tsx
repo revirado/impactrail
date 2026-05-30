@@ -8,7 +8,6 @@ import {
   Box,
   Container,
 } from "@mui/material";
-import Image from "next/image";
 import useScrollTrigger from "@mui/material/useScrollTrigger";
 import { useAuthStore } from "@/stores/auth.store";
 
@@ -59,12 +58,10 @@ export default function Navbar({ onScrollToTop }: NavbarProps) {
             sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
           >
             <Box sx={{ position: "relative", width: 36, height: 36 }}>
-              <Image
+              <img
                 src="/images/logo.png"
                 alt="IMPACTRAIL"
-                fill
-                priority
-                style={{ objectFit: "contain" }}
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
             </Box>
           </Box>

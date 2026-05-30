@@ -2,18 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Box,
-  Card,
-  CardContent,
-  TextField,
-  Button,
-  Typography,
-  Alert,
-  CircularProgress,
-  Container,
-} from "@mui/material";
-import Image from "next/image";
+import { Box, Card, CardContent, TextField, Button, Typography, Alert, CircularProgress, Container } from "@mui/material";
 import Link from "next/link";
 import { useAuthStore } from "@/stores/auth.store";
 
@@ -142,15 +131,12 @@ export default function LoginPage() {
       >
         <Card sx={{ width: "100%" }}>
           <CardContent sx={{ p: 4 }}>
-            <Box sx={{ textAlign: "center", mb: 3 }}>
-              <Box sx={{ position: "relative", width: 72, height: 72, mx: "auto", mb: 2 }}>
-                <Image
+              <Box sx={{ textAlign: "center", mb: 3 }}>
+                <img
                   src="/images/logo.png"
                   alt="IMPACTRAIL Logo"
-                  fill
-                  style={{ objectFit: "contain" }}
+                  style={{ width: 72, height: 72, objectFit: "contain", marginBottom: 16 }}
                 />
-              </Box>
               <Typography variant="h4" gutterBottom>
                 IMPACTRAIL
               </Typography>
