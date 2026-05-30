@@ -5,7 +5,10 @@ export function middleware(request: NextRequest) {
   const session = request.cookies.get("impactrail-session");
   const { pathname } = request.nextUrl;
 
-  if (!session && pathname !== "/login") {
+  const publicPaths = ["/login", "/api"];
+  const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
+
+  if (!session && !isPublicPath) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -17,5 +20,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
