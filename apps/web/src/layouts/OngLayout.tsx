@@ -1,4 +1,5 @@
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+"use client";
+
 import {
   AppBar,
   Box,
@@ -18,24 +19,25 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuthStore } from "@/stores/auth.store";
+import { usePathname, useRouter } from "next/navigation";
 
 const DRAWER_WIDTH = 240;
 
 const NAV_ITEMS = [
-  { label: "Dashboard", path: "/", icon: <DashboardIcon /> },
-  { label: "Vouchers", path: "/vouchers", icon: <ConfirmationNumberIcon /> },
+  { label: "Dashboard", path: "/ong", icon: <DashboardIcon /> },
+  { label: "Vouchers", path: "/ong/vouchers", icon: <ConfirmationNumberIcon /> },
 ];
 
-export default function OngLayout() {
+export default function OngLayout({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuthStore();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    router.push("/login");
   };
 
   const drawer = (
@@ -49,8 +51,8 @@ export default function OngLayout() {
         {NAV_ITEMS.map((item) => (
           <ListItem key={item.path} disablePadding>
             <ListItemButton
-              selected={location.pathname === item.path}
-              onClick={() => navigate(item.path)}
+              selected={pathname === item.path}
+              onClick={() => router.push(item.path)}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.label} />
@@ -63,10 +65,7 @@ export default function OngLayout() {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: theme.zIndex.drawer + 1 }}
-      >
+      <AppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
             Panel ONG
@@ -103,7 +102,7 @@ export default function OngLayout() {
           mt: 8,
         }}
       >
-        <Outlet />
+        {children}
       </Box>
     </Box>
   );

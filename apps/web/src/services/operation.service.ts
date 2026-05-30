@@ -1,4 +1,4 @@
-import api from "./api";
+import { api } from "./api";
 import type {
   ApiResponse,
   Operation,
@@ -8,11 +8,11 @@ import type {
 
 export const operationService = {
   async create(data: CreateOperationRequest): Promise<Operation> {
-    const response = await api.post<ApiResponse<Operation>>("/operations", data);
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Failed to create operation");
+    const response = await api.post<ApiResponse<Operation>>("/api/operations", data);
+    if (!response.success) {
+      throw new Error(response.error || "Failed to create operation");
     }
-    return response.data.data!;
+    return response.data!;
   },
 
   async getAll(params?: {
@@ -20,27 +20,24 @@ export const operationService = {
     ongId?: string;
     status?: string;
   }): Promise<Operation[]> {
-    const response = await api.get<ApiResponse<Operation[]>>("/operations", { params });
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Failed to fetch operations");
-    }
-    return response.data.data!;
-  },
+    const queryParams: Record<string, string> = {};
+    if (params?.donorId) queryParams.donorId = params.donorId;
+    if (params?.ongId) queryParams.ongId = params.ongId;
+    if (params?.status) queryParams.status = params.status;
 
-  async getById(id: string): Promise<Operation> {
-    const response = await api.get<ApiResponse<Operation>>(`/operations/${id}`);
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Operation not found");
+    const response = await api.get<ApiResponse<Operation[]>>("/api/operations", queryParams);
+    if (!response.success) {
+      throw new Error(response.error || "Failed to fetch operations");
     }
-    return response.data.data!;
+    return response.data!;
   },
 
   async getStats(donorId?: string): Promise<DashboardStats> {
-    const params = donorId ? { donorId } : {};
-    const response = await api.get<ApiResponse<DashboardStats>>("/operations/stats", { params });
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Failed to fetch stats");
+    const params = donorId ? { donorId } : undefined;
+    const response = await api.get<ApiResponse<DashboardStats>>("/api/operations/stats", params);
+    if (!response.success) {
+      throw new Error(response.error || "Failed to fetch stats");
     }
-    return response.data.data!;
+    return response.data!;
   },
 };

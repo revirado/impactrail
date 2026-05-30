@@ -1,4 +1,5 @@
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+"use client";
+
 import {
   AppBar,
   Box,
@@ -18,24 +19,29 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuthStore } from "@/stores/auth.store";
+import { usePathname, useRouter } from "next/navigation";
 
 const DRAWER_WIDTH = 240;
 
 const NAV_ITEMS = [
-  { label: "Dashboard", path: "/", icon: <DashboardIcon /> },
-  { label: "Operaciones", path: "/operations", icon: <ReceiptIcon /> },
+  { label: "Dashboard", path: "/corporate", icon: <DashboardIcon /> },
+  { label: "Operaciones", path: "/corporate/operations", icon: <ReceiptIcon /> },
 ];
 
-export default function CorporateLayout() {
+export default function CorporateLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, logout } = useAuthStore();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    router.push("/login");
   };
 
   const drawer = (
@@ -49,8 +55,8 @@ export default function CorporateLayout() {
         {NAV_ITEMS.map((item) => (
           <ListItem key={item.path} disablePadding>
             <ListItemButton
-              selected={location.pathname === item.path}
-              onClick={() => navigate(item.path)}
+              selected={pathname === item.path}
+              onClick={() => router.push(item.path)}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.label} />
@@ -63,10 +69,7 @@ export default function CorporateLayout() {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: theme.zIndex.drawer + 1 }}
-      >
+      <AppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
             Panel Corporativo
@@ -103,7 +106,7 @@ export default function CorporateLayout() {
           mt: 8,
         }}
       >
-        <Outlet />
+        {children}
       </Box>
     </Box>
   );

@@ -1,4 +1,5 @@
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+"use client";
+
 import {
   AppBar,
   Box,
@@ -13,18 +14,23 @@ import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuthStore } from "@/stores/auth.store";
+import { usePathname, useRouter } from "next/navigation";
 
-export default function MerchantLayout() {
+export default function MerchantLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, logout } = useAuthStore();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    router.push("/login");
   };
 
-  const navValue = location.pathname === "/" ? 0 : 1;
+  const navValue = pathname === "/merchant" ? 0 : 1;
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -54,7 +60,7 @@ export default function MerchantLayout() {
           width: "100%",
         }}
       >
-        <Outlet />
+        {children}
       </Box>
 
       <Paper
@@ -64,7 +70,7 @@ export default function MerchantLayout() {
         <BottomNavigation
           value={navValue}
           onChange={(_, newValue) => {
-            navigate(newValue === 0 ? "/" : "/transactions");
+            router.push(newValue === 0 ? "/merchant" : "/merchant/transactions");
           }}
         >
           <BottomNavigationAction

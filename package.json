@@ -4,18 +4,16 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "apps/*",
-    "server"
+    "apps/*"
   ],
   "scripts": {
-    "dev": "npm run dev --workspaces --if-present",
-    "dev:web": "npm run dev -w apps/web",
-    "dev:server": "npm run dev -w server",
-    "build": "npm run build --workspaces --if-present",
-    "db:generate": "npm run db:generate -w server",
-    "db:push": "npm run db:push -w server",
-    "db:seed": "npm run db:seed -w server",
-    "db:studio": "npm run db:studio -w server"
+    "dev": "npm run dev -w apps/web",
+    "build": "npm run build -w apps/web",
+    "start": "npm run start -w apps/web",
+    "db:generate": "npm run db:generate -w apps/web",
+    "db:push": "npm run db:push -w apps/web",
+    "db:seed": "npm run db:seed -w apps/web",
+    "db:studio": "npm run db:studio -w apps/web"
   },
   "engines": {
     "node": ">=18"

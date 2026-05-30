@@ -1,4 +1,5 @@
-import { Outlet, useNavigate } from "react-router-dom";
+"use client";
+
 import {
   AppBar,
   Box,
@@ -8,14 +9,19 @@ import {
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuthStore } from "@/stores/auth.store";
+import { useRouter } from "next/navigation";
 
-export default function BeneficiaryLayout() {
+export default function BeneficiaryLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, logout } = useAuthStore();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    router.push("/login");
   };
 
   return (
@@ -45,7 +51,7 @@ export default function BeneficiaryLayout() {
           width: "100%",
         }}
       >
-        <Outlet />
+        {children}
       </Box>
     </Box>
   );

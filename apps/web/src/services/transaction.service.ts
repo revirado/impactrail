@@ -1,4 +1,4 @@
-import api from "./api";
+import { api } from "./api";
 import type {
   ApiResponse,
   Transaction,
@@ -7,11 +7,11 @@ import type {
 
 export const transactionService = {
   async process(data: ProcessTransactionRequest): Promise<Transaction> {
-    const response = await api.post<ApiResponse<Transaction>>("/transactions", data);
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Failed to process transaction");
+    const response = await api.post<ApiResponse<Transaction>>("/api/transactions", data);
+    if (!response.success) {
+      throw new Error(response.error || "Failed to process transaction");
     }
-    return response.data.data!;
+    return response.data!;
   },
 
   async getAll(params?: {
@@ -19,28 +19,15 @@ export const transactionService = {
     voucherId?: string;
     status?: string;
   }): Promise<Transaction[]> {
-    const response = await api.get<ApiResponse<Transaction[]>>("/transactions", { params });
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Failed to fetch transactions");
-    }
-    return response.data.data!;
-  },
+    const queryParams: Record<string, string> = {};
+    if (params?.merchantId) queryParams.merchantId = params.merchantId;
+    if (params?.voucherId) queryParams.voucherId = params.voucherId;
+    if (params?.status) queryParams.status = params.status;
 
-  async getById(id: string): Promise<Transaction> {
-    const response = await api.get<ApiResponse<Transaction>>(`/transactions/${id}`);
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Transaction not found");
+    const response = await api.get<ApiResponse<Transaction[]>>("/api/transactions", queryParams);
+    if (!response.success) {
+      throw new Error(response.error || "Failed to fetch transactions");
     }
-    return response.data.data!;
-  },
-
-  async verify(id: string): Promise<{ valid: boolean; checkpoint?: unknown }> {
-    const response = await api.get<ApiResponse<{ valid: boolean; checkpoint?: unknown }>>(
-      `/transactions/${id}/verify`
-    );
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Failed to verify transaction");
-    }
-    return response.data.data!;
+    return response.data!;
   },
 };

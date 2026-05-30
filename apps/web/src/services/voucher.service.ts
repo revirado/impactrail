@@ -1,4 +1,4 @@
-import api from "./api";
+import { api } from "./api";
 import type {
   ApiResponse,
   Voucher,
@@ -7,11 +7,11 @@ import type {
 
 export const voucherService = {
   async create(data: CreateVoucherRequest): Promise<Voucher> {
-    const response = await api.post<ApiResponse<Voucher>>("/vouchers", data);
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Failed to create voucher");
+    const response = await api.post<ApiResponse<Voucher>>("/api/vouchers", data);
+    if (!response.success) {
+      throw new Error(response.error || "Failed to create voucher");
     }
-    return response.data.data!;
+    return response.data!;
   },
 
   async getAll(params?: {
@@ -19,26 +19,27 @@ export const voucherService = {
     beneficiaryId?: string;
     status?: string;
   }): Promise<Voucher[]> {
-    const response = await api.get<ApiResponse<Voucher[]>>("/vouchers", { params });
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Failed to fetch vouchers");
-    }
-    return response.data.data!;
-  },
+    const queryParams: Record<string, string> = {};
+    if (params?.ongId) queryParams.ongId = params.ongId;
+    if (params?.beneficiaryId) queryParams.beneficiaryId = params.beneficiaryId;
+    if (params?.status) queryParams.status = params.status;
 
-  async getById(id: string): Promise<Voucher> {
-    const response = await api.get<ApiResponse<Voucher>>(`/vouchers/${id}`);
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Voucher not found");
+    const response = await api.get<ApiResponse<Voucher[]>>("/api/vouchers", queryParams);
+    if (!response.success) {
+      throw new Error(response.error || "Failed to fetch vouchers");
     }
-    return response.data.data!;
+    return response.data!;
   },
 
   async getByQr(qrCode: string): Promise<Voucher> {
-    const response = await api.get<ApiResponse<Voucher>>(`/vouchers/qr/${qrCode}`);
-    if (!response.data.success) {
-      throw new Error(response.data.error || "Voucher not found");
+    const response = await api.get<ApiResponse<Voucher[]>>(`/api/vouchers`);
+    if (!response.success) {
+      throw new Error(response.error || "Failed to fetch vouchers");
     }
-    return response.data.data!;
+    const voucher = response.data!.find((v) => v.qrCode === qrCode.toUpperCase());
+    if (!voucher) {
+      throw new Error("Voucher not found");
+    }
+    return voucher;
   },
 };
