@@ -61,7 +61,7 @@ export default function Navbar({ onScrollToTop }: NavbarProps) {
             <Box sx={{ position: "relative", width: 36, height: 36 }}>
               <Image
                 src="/images/logo.png"
-                alt="Impactrail"
+                alt="IMPACTRAIL"
                 fill
                 priority
                 style={{ objectFit: "contain" }}

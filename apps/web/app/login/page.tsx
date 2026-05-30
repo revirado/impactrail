@@ -14,6 +14,7 @@ import {
   Container,
 } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 import { useAuthStore } from "@/stores/auth.store";
 
 type SystemStatus = "checking" | "serverDown" | "dbDown" | "ok";
@@ -145,13 +146,13 @@ export default function LoginPage() {
               <Box sx={{ position: "relative", width: 72, height: 72, mx: "auto", mb: 2 }}>
                 <Image
                   src="/images/logo.png"
-                  alt="Impactrail Logo"
+                  alt="IMPACTRAIL Logo"
                   fill
                   style={{ objectFit: "contain" }}
                 />
               </Box>
               <Typography variant="h4" gutterBottom>
-                Impactrail
+                IMPACTRAIL
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Plataforma de distribución auditada de fondos sociales
@@ -287,6 +288,18 @@ export default function LoginPage() {
                     disabled={isLoading}
                   >
                     Comercio (Don Pedro)
+                  </Button>
+                </Box>
+
+                <Box sx={{ mt: 3, textAlign: "center" }}>
+                  <Button
+                    component={Link}
+                    href="/"
+                    variant="text"
+                    size="small"
+                    sx={{ color: "#4caf50" }}
+                  >
+                    ← Volver al inicio
                   </Button>
                 </Box>
               </>

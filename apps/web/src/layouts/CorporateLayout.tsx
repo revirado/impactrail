@@ -48,7 +48,7 @@ export default function CorporateLayout({
     <Box>
       <Toolbar>
         <Typography variant="h6" noWrap>
-          Impactrail
+          IMPACTRAIL
         </Typography>
       </Toolbar>
       <List>

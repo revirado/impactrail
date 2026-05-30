@@ -51,7 +51,7 @@ export default function ProblemSection() {
             sx={{ color: "#555", mb: 6, maxWidth: 600, mx: "auto", lineHeight: 1.7 }}
           >
             Las organizaciones enfrentan barreras reales al distribuir fondos sociales.
-            Impactrail las resuelve con tecnología verificable.
+            IMPACTRAIL las resuelve con tecnología verificable.
           </Typography>
         </motion.div>
 

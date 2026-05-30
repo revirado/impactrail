@@ -17,7 +17,7 @@ export default function Footer() {
           }}
         >
           <Typography variant="body2" sx={{ color: "#6b8b6b" }}>
-            &copy; {new Date().getFullYear()} Impactrail. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} IMPACTRAIL. Todos los derechos reservados.
           </Typography>
           <Box sx={{ display: "flex", gap: 3 }}>
             <Link href="/login" style={{ textDecoration: "none" }}>

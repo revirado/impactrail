@@ -24,7 +24,7 @@ export default function HeroSection() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  const titleLetters = "Impactrail".split("");
+  const titleLetters = "IMPACTRAIL".split("");
 
   const ctaText = user ? "Ir al panel" : "Acceder a la plataforma";
   const ctaPath = user
@@ -170,7 +170,7 @@ export default function HeroSection() {
               fontSize: { xs: "0.95rem", md: "1.1rem" },
             }}
           >
-            Impactrail — Cada operación genera un registro criptográfico inmutable.
+            IMPACTRAIL — Cada operación genera un registro criptográfico inmutable.
           </Typography>
         </motion.div>
 

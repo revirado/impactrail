@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import ThemeRegistry from "@/components/ThemeRegistry";
 
 export const metadata: Metadata = {
-  title: "Impactrail",
+  title: "IMPACTRAIL",
   description: "Plataforma de distribución auditada de fondos sociales",
 };
 
