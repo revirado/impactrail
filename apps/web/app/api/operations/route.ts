@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { stellarService } from "@/lib/stellar";
+
+export const dynamic = "force-dynamic";
 import type {
   ApiResponse,
   Operation,

@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import type { ApiResponse, DashboardStats } from "@impactrail/shared-types";
 import { OperationStatus } from "@impactrail/shared-types";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const donorId = searchParams.get("donorId");
