@@ -5,10 +5,10 @@ export function middleware(request: NextRequest) {
   const session = request.cookies.get("impactrail-session");
   const { pathname } = request.nextUrl;
 
-  const publicPaths = ["/login", "/api"];
-  const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
+  const openPaths = ["/login", "/api"];
+  const isPublic = pathname === "/" || openPaths.some((path) => pathname.startsWith(path));
 
-  if (!session && !isPublicPath) {
+  if (!session && !isPublic) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 

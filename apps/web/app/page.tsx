@@ -1,52 +1,33 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import LandingPageClient from "./components/landing/PageClient";
 
 export default function HomePage() {
-  const router = useRouter();
   const { user } = useAuthStore();
+  const router = useRouter();
+
+  const getDashboardPath = useCallback((role: string): string => {
+    switch (role) {
+      case "CORPORATE": return "/corporate";
+      case "ONG": return "/ong";
+      case "BENEFICIARY": return "/beneficiary";
+      case "MERCHANT": return "/merchant";
+      default: return "/login";
+    }
+  }, []);
 
   useEffect(() => {
-    if (!user) {
-      router.replace("/login");
-    } else {
-      switch (user.role) {
-        case "CORPORATE":
-          router.replace("/corporate");
-          break;
-        case "ONG":
-          router.replace("/ong");
-          break;
-        case "BENEFICIARY":
-          router.replace("/beneficiary");
-          break;
-        case "MERCHANT":
-          router.replace("/merchant");
-          break;
-        default:
-          router.replace("/login");
-      }
+    if (user) {
+      router.replace(getDashboardPath(user.role));
     }
-  }, [user, router]);
+  }, [user, router, getDashboardPath]);
 
-  return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: 2,
-      }}
-    >
-      <CircularProgress />
-      <Typography variant="body2" color="text.secondary">
-        Cargando...
-      </Typography>
-    </Box>
-  );
+  if (user) {
+    return null;
+  }
+
+  return <LandingPageClient />;
 }

@@ -14,19 +14,20 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
-    "@impactrail/shared-types": "*",
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@impactrail/shared-types": "*",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
     "@prisma/client": "^5.14.0",
+    "framer-motion": "^12.40.0",
     "next": "^14.2.3",
+    "qrcode.react": "^3.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "zustand": "^4.5.2",
-    "qrcode.react": "^3.1.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",

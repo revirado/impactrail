@@ -13,6 +13,7 @@ import {
   CircularProgress,
   Container,
 } from "@mui/material";
+import Image from "next/image";
 import { useAuthStore } from "@/stores/auth.store";
 
 type SystemStatus = "checking" | "serverDown" | "dbDown" | "ok";
@@ -72,7 +73,7 @@ export default function LoginPage() {
 
         setStatus("ok");
         setErrorMessage(null);
-      } catch (dbErr) {
+      } catch {
         clearTimeout(dbTimeoutId);
         setStatus("dbDown");
         setErrorMessage("Timeout al verificar la base de datos.");
@@ -80,12 +81,14 @@ export default function LoginPage() {
     } catch (err) {
       clearTimeout(timeoutId);
       setStatus("serverDown");
-      
+
       if (err instanceof Error) {
         if (err.name === "AbortError") {
           setErrorMessage("Timeout: El servidor no responde en 3 segundos.");
         } else if (err.message.includes("Failed to fetch")) {
-          setErrorMessage("No se puede conectar con el servidor. Verifica que esté corriendo con `npm run dev`.");
+          setErrorMessage(
+            "No se puede conectar con el servidor. Verifica que esté corriendo con `npm run dev`."
+          );
         } else {
           setErrorMessage(err.message);
         }
@@ -98,7 +101,6 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     clearError();
-    
     if (status !== "ok") return;
 
     try {
@@ -113,7 +115,6 @@ export default function LoginPage() {
   const quickLogin = async (testEmail: string) => {
     clearError();
     setEmail(testEmail);
-    
     if (status !== "ok") return;
 
     try {
@@ -140,20 +141,28 @@ export default function LoginPage() {
       >
         <Card sx={{ width: "100%" }}>
           <CardContent sx={{ p: 4 }}>
-            <Typography variant="h4" align="center" gutterBottom>
-              Impactrail
-            </Typography>
-            <Typography variant="body2" align="center" color="text.secondary" mb={4}>
-              Plataforma de distribución auditada de fondos sociales
-            </Typography>
+            <Box sx={{ textAlign: "center", mb: 3 }}>
+              <Box sx={{ position: "relative", width: 72, height: 72, mx: "auto", mb: 2 }}>
+                <Image
+                  src="/images/logo.png"
+                  alt="Impactrail Logo"
+                  fill
+                  style={{ objectFit: "contain" }}
+                />
+              </Box>
+              <Typography variant="h4" gutterBottom>
+                Impactrail
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Plataforma de distribución auditada de fondos sociales
+              </Typography>
+            </Box>
 
             {status === "checking" && (
               <Alert severity="info" sx={{ mb: 2 }}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   <CircularProgress size={16} />
-                  <Typography variant="body2">
-                    Verificando conexión...
-                  </Typography>
+                  <Typography variant="body2">Verificando conexión...</Typography>
                 </Box>
               </Alert>
             )}
@@ -166,24 +175,37 @@ export default function LoginPage() {
                 <Typography variant="body2" gutterBottom>
                   {errorMessage}
                 </Typography>
-
-                <Box sx={{ mt: 2, p: 2, bgcolor: "rgba(0,0,0,0.04)", borderRadius: 1 }}>
+                <Box
+                  sx={{ mt: 2, p: 2, bgcolor: "rgba(0,0,0,0.04)", borderRadius: 1 }}
+                >
                   <Typography variant="body2" fontWeight="bold" gutterBottom>
                     Solución rápida:
                   </Typography>
                   <Typography variant="body2" component="ol" sx={{ pl: 2 }}>
                     <li>
                       Asegurate de tener <code>.env.local</code> con:
-                      <Box component="pre" sx={{ mt: 1, p: 1, bgcolor: "rgba(0,0,0,0.08)", borderRadius: 1, fontSize: "0.75rem" }}>
-                        DATABASE_URL="file:./dev.db"
+                      <Box
+                        component="pre"
+                        sx={{
+                          mt: 1,
+                          p: 1,
+                          bgcolor: "rgba(0,0,0,0.08)",
+                          borderRadius: 1,
+                          fontSize: "0.75rem",
+                        }}
+                      >
+                        DATABASE_URL=&quot;file:./dev.db&quot;
                       </Box>
                     </li>
-                    <li>Ejecutá: <code>npm run db:push</code></li>
-                    <li>Ejecutá: <code>npm run db:seed</code></li>
+                    <li>
+                      Ejecutá: <code>npm run db:push</code>
+                    </li>
+                    <li>
+                      Ejecutá: <code>npm run db:seed</code>
+                    </li>
                     <li>Reiniciá el servidor</li>
                   </Typography>
                 </Box>
-
                 <Button
                   variant="outlined"
                   size="small"
@@ -224,7 +246,12 @@ export default function LoginPage() {
                   </Button>
                 </form>
 
-                <Typography variant="body2" color="text.secondary" align="center" mb={2}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  align="center"
+                  mb={2}
+                >
                   Acceso rápido (demo):
                 </Typography>
 
